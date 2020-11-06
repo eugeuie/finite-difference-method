@@ -106,7 +106,7 @@ void print_output(double left, double right, double h, double eps, double *grid_
 
 int main() {
     message_size = 256;
-//    example = 1;
+//    example = 7;
     clock_t start, end;
     double a, b, c, d, h, eps;
 
@@ -130,7 +130,7 @@ int main() {
 //    grid_y = finite_difference_method(a, b, c, d, h, eps);
 //    end = clock();
 //
-//    print_output(a, b, h, eps, grid_y, 1, ((double) (end - start) / CLOCKS_PER_SEC), n, loss(a, h, grid_y));
+//    print_output(a, b, h, eps, grid_y, 0, ((double) (end - start) / CLOCKS_PER_SEC), n, loss(a, h, grid_y));
 
     return 0;
 }
