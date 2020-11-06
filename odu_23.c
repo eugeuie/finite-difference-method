@@ -70,7 +70,7 @@ double *tridiagonal_matrix_algorithm(int n_equations, const double *a, const dou
     return x;
 }
 
-double *finite_difference_method(double left, double right, double y_left, double y_right, double h, double eps) {
+double *finite_difference_method(double left, double y_left, double y_right, double h) {
     int i;
     double x, *y = malloc(n * sizeof(double)), *y_without_borders, a[n - 2], b[n - 2], c[n - 2], d[n - 2];
 

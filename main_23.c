@@ -106,31 +106,31 @@ void print_output(double left, double right, double h, double eps, double *grid_
 
 int main() {
     message_size = 256;
-//    example = 7;
+    example = 7;
     clock_t start, end;
     double a, b, c, d, h, eps;
 
-    for(example = 1; example <= 7; example++) {
-        get_input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
-        n = (int) ((b - a) / h) + 1;
-        double *grid_y;
-
-        start = clock();
-        grid_y = finite_difference_method(a, b, c, d, h, eps);
-        end = clock();
-
-        print_output(a, b, h, eps, grid_y, 1, ((double) (end - start) / CLOCKS_PER_SEC), n, loss(a, h, grid_y));
-    }
-
-//    get_input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
-//    n = (int) ((b - a) / h) + 1;
-//    double *grid_y;
+//    for(example = 1; example <= 7; example++) {
+//        get_input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
+//        n = (int) ((b - a) / h) + 1;
+//        double *grid_y;
 //
-//    start = clock();
-//    grid_y = finite_difference_method(a, b, c, d, h, eps);
-//    end = clock();
+//        start = clock();
+//        grid_y = finite_difference_method(a, c, d, h);
+//        end = clock();
 //
-//    print_output(a, b, h, eps, grid_y, 0, ((double) (end - start) / CLOCKS_PER_SEC), n, loss(a, h, grid_y));
+//        print_output(a, b, h, eps, grid_y, 1, ((double) (end - start) / CLOCKS_PER_SEC), n, loss(a, h, grid_y));
+//    }
+
+    get_input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
+    n = (int) ((b - a) / h) + 1;
+    double *grid_y;
+
+    start = clock();
+    grid_y = finite_difference_method(a, c, d, h);
+    end = clock();
+
+    print_output(a, b, h, eps, grid_y, 0, ((double) (end - start) / CLOCKS_PER_SEC), n, loss(a, h, grid_y));
 
     return 0;
 }

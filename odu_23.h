@@ -23,6 +23,6 @@ double second_derivative_of_y(double x);
 
 double *tridiagonal_matrix_algorithm(int n_equations, const double *a, const double *b, const double *c, const double *d);
 
-double *finite_difference_method(double left, double right, double y_left, double y_right, double h, double eps);
+double *finite_difference_method(double left, double y_left, double y_right, double h);
 
 #endif //FINITE_DIFFERENCE_METHOD_ODU_23_H
