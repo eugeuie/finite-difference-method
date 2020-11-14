@@ -7,51 +7,6 @@ void exception(char *message) {
     exit(1);
 }
 
-void get_input(int read_from_file, char *filename, double *a, double *b, double *c, double *d, double *h, double *eps) {
-    char message[message_size];
-
-    if(read_from_file) {
-        FILE *input_file;
-
-        if((input_file = fopen(filename, "r")) == NULL) {
-            sprintf(message, "Cannot open input file");
-            exception(message);
-        }
-
-        fscanf(input_file, "%lf %lf %lf %lf %lf %lf", a, b, c, d, h, eps);
-    } else {
-        switch(example) {
-            case 1: *a = 0,     *b = 1;     break;
-            case 2: *a = 0,     *b = 2;     break;
-            case 3: *a = 0,     *b = 3;     break;
-            case 4: *a = 2,     *b = 5;     break;
-            case 5: *a = 0.5,   *b = 1.5;   break;
-            case 6: *a = 0,     *b = 1;     break;
-            case 7: *a = 1,     *b = 2;     break;
-            default:
-                sprintf(message, "Example %d does not exist", example);
-                exception(message);
-        }
-
-        *c = y(*a);
-        *d = y(*b);
-        *h = 0.001;
-        *eps = 0.001;
-    }
-}
-
-double loss(double left, double h, double *grid_y) {
-    int i;
-    double loss = 0, x;
-
-    for(i = 0, x = left; i < n; i++, x += h) {
-        loss += pow(y(x) - grid_y[i], 2);
-    }
-    loss /= n;
-
-    return loss;
-}
-
 void draw(double left, double right, double h, double *grid_y, int save_to_png) {
     int i;
     double x;
@@ -80,8 +35,41 @@ void draw(double left, double right, double h, double *grid_y, int save_to_png) 
     pclose(pipe);
 }
 
-void print_output(double left, double right, double h, double eps, double *grid_y,
-                  int save_to_png, double time, int n_nodes, double loss) {
+void input(int read_from_file, char *filename, double *a, double *b, double *c, double *d, double *h, double *eps) {
+    char message[CHAR_MAX];
+
+    if(read_from_file) {
+        FILE *input_file;
+
+        if((input_file = fopen(filename, "r")) == NULL) {
+            sprintf(message, "Cannot open input file");
+            exception(message);
+        }
+
+        fscanf(input_file, "%lf %lf %lf %lf %lf %lf", a, b, c, d, h, eps);
+    } else {
+        switch(example) {
+            case 1: *a = 0,     *b = 1;     break;
+            case 2: *a = 0,     *b = 2;     break;
+            case 3: *a = 0,     *b = 3;     break;
+            case 4: *a = 2,     *b = 5;     break;
+            case 5: *a = 0.5,   *b = 1.5;   break;
+//            case 6: *a = 0,     *b = 1;     break; // Invalid example
+            case 7: *a = 1,     *b = 2;     break;
+            default:
+                sprintf(message, "Example %d does not exist", example);
+                exception(message);
+        }
+
+        *c = y(*a);
+        *d = y(*b);
+        *h = 0.1;
+        *eps = 1e-16;
+    }
+}
+
+void output(double left, double right, double h, double eps, double *grid_y,
+            int save_to_png, double time, int n_nodes, double loss) {
     int i;
 
     char result_filename[] = "../results/#_example_output.txt";
@@ -95,42 +83,41 @@ void print_output(double left, double right, double h, double eps, double *grid_
     }
 
     FILE *info_file = fopen(info_filename, "w");
-    fprintf(info_file, "time:\t%lf\n", time);
-    fprintf(info_file, "step:\t%lf\n", h);
-    fprintf(info_file, "eps:\t%lf\n", eps);
+    fprintf(info_file, "time:\t%.16lf\n", time);
+    fprintf(info_file, "step:\t%.16lf\n", h);
     fprintf(info_file, "nodes:\t%d\n", n_nodes);
-    fprintf(info_file, "loss:\t%lf\n", loss);
+    fprintf(info_file, "eps:\t%.16lf\n", eps);
+    fprintf(info_file, "loss:\t%.16lf\n", loss);
 
     draw(left, right, h, grid_y, save_to_png);
 }
 
 int main() {
-    message_size = 256;
-    example = 7;
+    example = 1;
     clock_t start, end;
-    double a, b, c, d, h, eps;
+//    double a, b, c, d, h, eps, *grid_y, error = INFINITY;
 
-//    for(example = 1; example <= 7; example++) {
-//        get_input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
-//        n = (int) ((b - a) / h) + 1;
-//        double *grid_y;
+//    input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
 //
-//        start = clock();
-//        grid_y = finite_difference_method(a, c, d, h);
-//        end = clock();
+//    start = clock();
+//    grid_y = solve(a, b, c, d, &h, eps, 0, &error);
+//    end = clock();
 //
-//        print_output(a, b, h, eps, grid_y, 1, ((double) (end - start) / CLOCKS_PER_SEC), n, loss(a, h, grid_y));
-//    }
+//    output(a, b, h, eps, grid_y, 0, ((double) (end - start) / CLOCKS_PER_SEC), n, error);
 
-    get_input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
-    n = (int) ((b - a) / h) + 1;
-    double *grid_y;
+    for(example = 1; example <= 7; example++) {
+        double a, b, c, d, h, eps, *grid_y, error = INFINITY;
 
-    start = clock();
-    grid_y = finite_difference_method(a, c, d, h);
-    end = clock();
+        if(example == 6) continue;
 
-    print_output(a, b, h, eps, grid_y, 0, ((double) (end - start) / CLOCKS_PER_SEC), n, loss(a, h, grid_y));
+        input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
+
+        start = clock();
+        grid_y = solve(a, b, c, d, &h, eps, 1, &error);
+        end = clock();
+
+        output(a, b, h, eps, grid_y, 1, ((double) (end - start) / CLOCKS_PER_SEC), n, error);
+    }
 
     return 0;
 }

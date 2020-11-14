@@ -2,7 +2,7 @@
 
 
 double q(double x) {
-    char message[message_size];
+    char message[CHAR_MAX];
 
     switch(example) {
         case 1: return 2 / (x * x + 1);
