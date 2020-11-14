@@ -96,6 +96,7 @@ double *second_order_accurate_finite_difference_method(double left, double y_lef
         grid_y[i] = grid_y_without_borders[i - 1];
     }
 
+    free(grid_y_without_borders);
     return grid_y;
 }
 
@@ -160,6 +161,7 @@ double *fourth_order_accurate_finite_difference_method(double left, double y_lef
         grid_y[i] = grid_y_without_borders[i - 2];
     }
 
+    free(grid_y_without_borders);
     return grid_y;
 }
 
@@ -176,9 +178,15 @@ double loss(double left, double h, double *grid_y) {
 }
 
 double *solve(double a, double b, double c, double d, double *h, double eps, int high_accuracy_approximation, double *error) {
+    char message[CHAR_MAX];
     double *grid_y, c_next, d_prev;
 
     while(1) {
+//        if(*h <= 2e-5) {
+//            sprintf(message, "Too small step. Try to increase the value of allowable error (eps), minimum possible value is 1e-016, yours is %1.0e", eps);
+//            exception(message);
+//        }
+
         n = (int) ((b - a) / *h) + 1;
 
         if(!high_accuracy_approximation) {

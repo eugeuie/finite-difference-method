@@ -47,6 +47,7 @@ void input(int read_from_file, char *filename, double *a, double *b, double *c, 
         }
 
         fscanf(input_file, "%lf %lf %lf %lf %lf %lf", a, b, c, d, h, eps);
+        fclose(input_file);
     } else {
         switch(example) {
             case 1: *a = 0,     *b = 1;     break;
@@ -84,27 +85,32 @@ void output(double left, double right, double h, double eps, double *grid_y,
     }
 
     FILE *info_file = fopen(info_filename, "w");
-    fprintf(info_file, "time:\t%1.2e\n", time);
-    fprintf(info_file, "step:\t%1.2e\n", h);
+    fprintf(info_file, "time:\t%.7lf\n", time);
+    fprintf(info_file, "step:\t%.7lf\n", h);
     fprintf(info_file, "nodes:\t%d\n", n_nodes);
     fprintf(info_file, "eps:\t%1.2e\n", eps);
     fprintf(info_file, "loss:\t%1.2e\n", loss);
 
     draw(left, right, h, grid_y, save_to_png);
+
+    fclose(result_file);
+    fclose(info_file);
 }
 
 int main() {
-//    example = 1; // 6th example is invalid
     clock_t start, end;
 //    double a, b, c, d, h, eps, *grid_y, error = INFINITY;
-
+//
+//    example = 4; // 6th example is invalid
+//
 //    input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
 //
 //    start = clock();
-//    grid_y = solve(a, b, c, d, &h, eps, 0, &error);
+//    grid_y = solve(a, b, c, d, &h, eps, 1, &error);
 //    end = clock();
 //
 //    output(a, b, h, eps, grid_y, 0, ((double) (end - start) / CLOCKS_PER_SEC), n, error);
+//    free(grid_y);
 
     for(example = 1; example <= 7; example++) {
         double a, b, c, d, h, eps, *grid_y, error = INFINITY;
@@ -118,6 +124,8 @@ int main() {
         end = clock();
 
         output(a, b, h, eps, grid_y, 1, ((double) (end - start) / CLOCKS_PER_SEC), n, error);
+
+        free(grid_y);
     }
 
     return 0;
