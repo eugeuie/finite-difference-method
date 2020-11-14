@@ -182,23 +182,26 @@ double *solve(double a, double b, double c, double d, double *h, double eps, int
     double *grid_y, c_next, d_prev;
 
     while(1) {
-//        if(*h <= 2e-5) {
-//            sprintf(message, "Too small step. Try to increase the value of allowable error (eps), minimum possible value is 1e-016, yours is %1.0e", eps);
-//            exception(message);
-//        }
-
         n = (int) ((b - a) / *h) + 1;
 
         if(!high_accuracy_approximation) {
+            if(eps < 1e-16) {
+                sprintf(message, "Too small value of allowable error (eps). Minimum possible value of eps for a present implementation of the second-order accurate finite difference method is 1e-016, yours is %1.0e", eps);
+                exception(message);
+            }
             grid_y = second_order_accurate_finite_difference_method(a, c, d, *h);
         } else {
+            if(eps < 1e-20) {
+                sprintf(message, "Too small value of allowable error (eps). Minimum possible value of eps for a present implementation of the fourth-order accurate finite difference method is 1e-020, yours is %1.0e", eps);
+                exception(message);
+            }
             c_next = y(a + *h);
             d_prev = y(b - *h);
             grid_y = fourth_order_accurate_finite_difference_method(a, c, c_next, d_prev, d, *h);
         }
 
         *error = loss(a, *h, grid_y);
-        printf("example %d: step %.16lf, error %.16lf\n", example, *h, *error);
+        printf("example %d: step %.16lf, nodes %5d, error %.16lf\n", example, *h, n, *error);
 
         if(*error < eps) break;
         *h /= 2;
