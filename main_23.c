@@ -78,22 +78,23 @@ void output(double left, double right, double h, double eps, double *grid_y,
     info_filename[11] = '0' + example;
 
     FILE *result_file = fopen(result_filename, "w");
+    fprintf(result_file, "%d\n", n_nodes);
     for(i = 0; i < n; i++) {
         fprintf(result_file, "%lf\n", grid_y[i]);
     }
 
     FILE *info_file = fopen(info_filename, "w");
-    fprintf(info_file, "time:\t%.16lf\n", time);
-    fprintf(info_file, "step:\t%.16lf\n", h);
+    fprintf(info_file, "time:\t%1.2e\n", time);
+    fprintf(info_file, "step:\t%1.2e\n", h);
     fprintf(info_file, "nodes:\t%d\n", n_nodes);
-    fprintf(info_file, "eps:\t%.16lf\n", eps);
-    fprintf(info_file, "loss:\t%.16lf\n", loss);
+    fprintf(info_file, "eps:\t%1.2e\n", eps);
+    fprintf(info_file, "loss:\t%1.2e\n", loss);
 
     draw(left, right, h, grid_y, save_to_png);
 }
 
 int main() {
-    example = 1;
+//    example = 1; // 6th example is invalid
     clock_t start, end;
 //    double a, b, c, d, h, eps, *grid_y, error = INFINITY;
 
@@ -108,7 +109,7 @@ int main() {
     for(example = 1; example <= 7; example++) {
         double a, b, c, d, h, eps, *grid_y, error = INFINITY;
 
-        if(example == 6) continue;
+        if(example == 6) continue; // 6th example is invalid
 
         input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
 

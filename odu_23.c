@@ -10,7 +10,7 @@ double y(double x) {
         case 3: return 1 - x * x + 2 * x - 11 * x + (x * x * x * x) / 6.0 + (x * x) / 2.0;
         case 4: return x + 2 * (log(x) + 1) + 0.5 * x * x * (1 - log(x));
         case 5: return x * (1 + sin(x)) + 0.5 * x * exp(x) * (cos(x) + sin(x));
-        case 6: return exp(x) * sin(x);
+//        case 6: return exp(x) * sin(x); // Invalid example
         case 7: return x * (1 + exp(0.5 * x * x)) + x * (cos(x * x) - 2 * sin(x * x));
         default:
             sprintf(message, "Example %d does not exist", example);
@@ -27,7 +27,7 @@ double first_derivative_of_y(double x) {
         case 3: return -x - 9 + 2 * (x * x * x) / 3;
         case 4: return 1 + 2 / x + 0.5 * x - x * log(x);
         case 5: return 1 + (x + exp(x) * (0.5 + x)) * cos(x) + (1 + 0.5 * exp(x)) * sin(x);
-        case 6: return exp(x) * (sin(x) + cos(x));
+//        case 6: return exp(x) * (sin(x) + cos(x)); // Invalid example
         case 7: return 1 + exp(0.5 * x * x) + exp(0.5 * x * x) * x * x + (1 - 4 * x * x) * cos(x * x) - 2 * (1 + x * x) * sin(x * x);
         default:
             sprintf(message, "Example %d does not exist", example);
@@ -44,7 +44,7 @@ double second_derivative_of_y(double x) {
         case 3: return 2 * x * x - 1;
         case 4: return -2 / (x * x) - log(x) - 0.5;
         case 5: return (2 + exp(x) * (2 + x)) * cos(x) + (-1 - exp(x)) * x * sin(x);
-        case 6: return 2 * exp(x) * cos(x);
+//        case 6: return 2 * exp(x) * cos(x); // Invalid example
         case 7: return x * (exp(0.5 * x * x) * (x * x + 3) + (-4 * x * x - 12) * cos(x * x) + (8 * x * x - 6) * sin(x * x));
         default:
             sprintf(message, "Example %d does not exist", example);
