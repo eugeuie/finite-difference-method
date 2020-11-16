@@ -1,3 +1,5 @@
+// Задача 23: Конечно-разностный метод с использованием метода аппроксимации функции для решения уравнений
+
 #include <time.h>
 #include "odu_23.h"
 
@@ -99,34 +101,34 @@ void output(double left, double right, double h, double eps, double *grid_y,
 
 int main() {
     clock_t start, end;
-//    double a, b, c, d, h, eps, *grid_y, error = INFINITY;
+    double a, b, c, d, h, eps, *grid_y, error = INFINITY;
+
+    example = 1; // 6th example is invalid
+
+    input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
+
+    start = clock();
+    grid_y = solve(a, b, c, d, &h, eps, 0, &error);
+    end = clock();
+
+    output(a, b, h, eps, grid_y, 0, ((double) (end - start) / CLOCKS_PER_SEC), n, error);
+    free(grid_y);
+
+//    for(example = 1; example <= 7; example++) {
+//        double a, b, c, d, h, eps, *grid_y, error = INFINITY;
 //
-//    example = 4; // 6th example is invalid
+//        if(example == 6) continue; // 6th example is invalid
 //
-//    input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
+//        input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
 //
-//    start = clock();
-//    grid_y = solve(a, b, c, d, &h, eps, 1, &error);
-//    end = clock();
+//        start = clock();
+//        grid_y = solve(a, b, c, d, &h, eps, 1, &error);
+//        end = clock();
 //
-//    output(a, b, h, eps, grid_y, 0, ((double) (end - start) / CLOCKS_PER_SEC), n, error);
-//    free(grid_y);
-
-    for(example = 1; example <= 7; example++) {
-        double a, b, c, d, h, eps, *grid_y, error = INFINITY;
-
-        if(example == 6) continue; // 6th example is invalid
-
-        input(0, "../input.txt", &a, &b, &c, &d, &h, &eps);
-
-        start = clock();
-        grid_y = solve(a, b, c, d, &h, eps, 1, &error);
-        end = clock();
-
-        output(a, b, h, eps, grid_y, 1, ((double) (end - start) / CLOCKS_PER_SEC), n, error);
-
-        free(grid_y);
-    }
+//        output(a, b, h, eps, grid_y, 1, ((double) (end - start) / CLOCKS_PER_SEC), n, error);
+//
+//        free(grid_y);
+//    }
 
     return 0;
 }
